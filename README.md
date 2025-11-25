@@ -1,33 +1,64 @@
-# Basic-Lighting-Calculation-Tool-LAMPU
-Lighting Calculation Tool
-
 # Basic Lighting Calculation Tool
 
-This is a web-based lighting calculator that uses the Lumen Method (aligned with Dialux standards). The tool allows users to:
+This is a web-based lighting calculator that uses the Lumen Method to estimate lighting requirements for a room.  
+It includes two main functions:
 
-- Calculate number of luminaires required for a room
-- Calculate achieved lux level using existing luminaires
-- Visualize lighting layout (grid or staggered)
-- Apply room presets, reflectance presets, and lighting presets
-- Auto-fill standard values (mounting height, working plane height)
-- See real-time validation for all fields
+- **Total Luminaires Needed**  
+- **Achieved Lux Level**
 
-## 📁 Features
-
-- Fully responsive HTML/CSS/JavaScript application  
-- Lumen Method Formula with Dialux multiplier (1.097)  
+The tool also provides:
 - Room index calculation  
-- UF estimation table  
-- Automatic layout generation (grid or staggered)  
-- Export options (copy or print results)
+- Utilization factor (UF) estimation  
+- Layout generation (Grid / Staggered)  
+- Preset values for common room types  
+- Automatic validation and error checking  
+- Dialux multiplier (1.097) included for accuracy  
+
+---
+
+## 📌 Features
+
+### ✔ Lighting Calculations
+- Number of luminaires needed  
+- Achieved illuminance (lux)  
+- Room Index (K)  
+- Utilisation Factor (UF)  
+- Light loss factor (LLF) option  
+- Dialux formula multiplier included  
+
+### ✔ Layout & Visualization
+- Grid Layout  
+- Staggered Layout  
+- Automatic calculation of spacing  
+- Room preview and dimensions  
+
+### ✔ Presets & Autofill
+- Room Type Presets (Office, Classroom, Corridor, etc.)  
+- Reflectance Presets  
+- Standard mounting height & working plane height autofill  
+- Example mode for testing  
+
+### ✔ Technical Notes
+- Fully client-side (no backend)  
+- Written in pure HTML, CSS, and JavaScript  
+- Works on any modern browser  
+
+---
 
 ## 🚀 How to Use
 
-1. Download or clone this repository.
-2. Open `index.html` in any browser (Chrome, Edge, Firefox, Safari).
-3. Fill in the room dimensions and lighting details.
-4. Click **Calculate**.
-5. View summary, layout, and detailed results.
+1. Open `index.html` in any web browser.  
+2. Enter room dimensions (length, width, height).  
+3. Choose calculation mode:
+   - **Luminaires Needed**
+   - **Achieved Lux Level**
+4. Fill in lighting details (lumens, reflectance, maintenance factor, etc.).  
+5. Click **Calculate**.  
+6. Scroll to see:
+   - Calculated results  
+   - Room Index  
+   - UF value  
+   - Layout preview  
+   - Spacing details  
 
-## 🗂️ File Structure
-
+---
