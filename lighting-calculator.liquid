@@ -1,0 +1,391 @@
+{% comment %}
+  Shopify Section: Lighting Calculator
+  Description: Professional lighting calculation tool for indoor spaces
+{% endcomment %}
+
+{{ 'lighting-calculator.css' | asset_url | stylesheet_tag }}
+
+<div class="lighting-calculator-wrapper">
+    <div class="container">
+        <!-- Navigation -->
+        <div class="page-navigation">
+            <button class="nav-button active" data-page="calculator">Calculator</button>
+            <button class="nav-button" data-page="info">Information</button>
+            <button class="nav-button" data-page="examples">Examples</button>
+        </div>
+        
+        <!-- Calculator Page -->
+        <div class="page active" id="calculator-page">
+            <h1>Basic Lighting Calculation Tool</h1>
+            
+            <div class="tool-summary">
+                This tool helps you calculate lighting requirements for indoor spaces and provides optimal 
+                lighting layout suggestions based on room dimensions and lighting parameters using Lumen Method.
+                Results are specifically calibrated for wide-beam (100°) LED fixtures to ensure 
+                alignment with Dialux software standards.
+            </div>
+
+            <form id="lightingForm">
+                <!-- Updated Calculation Objective Section -->
+                <div class="form-section">
+                    <h3>Calculation Objective</h3>
+                    <div class="objective-buttons">
+                        <div class="objective-button active" data-objective="calcLuminaires">
+                            <span class="icon">💡</span>
+                            Calculate Number of Luminaires
+                        </div>
+                        <div class="objective-button" data-objective="calcLux">
+                            <span class="icon">📊</span>
+                            Calculate Lux Level
+                        </div>
+                    </div>
+                    <input type="hidden" id="objective" name="objective" value="calcLuminaires">
+                </div>
+
+                <div class="toggle-group">
+                    <span>Unit:</span>
+                    <input type="radio" id="unitMm" name="unit" value="mm">
+                    <label for="unitMm">mm</label>
+                    <input type="radio" id="unitMeters" name="unit" value="meters" checked>
+                    <label for="unitMeters">Meters</label>
+                    <input type="radio" id="unitFeet" name="unit" value="feet">
+                    <label for="unitFeet">Feet</label>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Space Dimensions <span id="spaceUnitLabel">(meters)</span></h3>
+                    
+                    <!-- Room Presets -->
+                    <div class="preset-buttons">
+                        <button type="button" class="preset-btn" data-preset="small">Small Room</button>
+                        <button type="button" class="preset-btn" data-preset="medium">Medium Room</button>
+                        <button type="button" class="preset-btn" data-preset="large">Large Room</button>
+                        <button type="button" class="preset-btn" data-preset="office">Office</button>
+                        <button type="button" class="preset-btn" data-preset="classroom">Classroom</button>
+                    </div>
+                    
+                    <div class="vertical-fields">
+                        <label>Length:
+                            <input type="number" step="0.1" min="0" id="length" placeholder="Enter length" required>
+                            <span class="helper-text">Typical: 3-6m for rooms, 8-12m for classrooms</span>
+                            <span class="error" id="lengthError">Please enter a non-negative value</span>
+                        </label>
+                        <label>Width:
+                            <input type="number" step="0.1" min="0" id="width" placeholder="Enter width" required>
+                            <span class="helper-text">Typical: 3-5m for rooms, 6-8m for classrooms</span>
+                            <span class="error" id="widthError">Please enter a non-negative value</span>
+                        </label>
+                        <label>Height:
+                            <input type="number" step="0.1" min="0" id="height" placeholder="Enter height" required>
+                            <span class="helper-text">Typical: 2.4-3m for residential, 3-4m for commercial</span>
+                            <span class="error" id="heightError">Please enter a non-negative value</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Lighting Requirements</h3>
+                    <div id="targetLuxContainer">
+                        <div class="note">(Select a room type to autofill the recommended lux value, or choose "Custom" to input your own)</div>
+                        <label>Room Type:
+                            <select id="roomType">
+                                <option value="100">Corridor / Hallway</option>
+                                <option value="50">Bedroom</option>
+                                <option value="100">Bathroom</option>
+                                <option value="150">Living Room</option>
+                                <option value="500">Office / Study</option>
+                                <option value="300">Kitchen</option>
+                                <option value="500">Classroom</option>
+                                <option value="500">Multipurpose Hall</option>
+                                <option value="500">Retail / Shop</option>
+                                <option value="750">Laboratory</option>
+                                <option value="custom" selected>Custom</option>
+                            </select>
+                        </label>
+                        <label>Target Illuminance (lux):
+                            <input type="number" min="0" id="targetLux" placeholder="Enter target lux" required>
+                            <span class="error" id="luxError">Please enter a non-negative lux value</span>
+                        </label>
+                    </div>
+                    <div id="numLuminairesContainer" style="display: none;">
+                        <label>Number of Luminaires:
+                            <input type="number" min="1" step="1" id="numLuminairesInput" placeholder="Enter quantity of lights">
+                            <span class="error" id="numLuminairesError">Please enter a positive whole number</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Light Specifications</h3>
+                    <div class="note">(Choose a predefined light source type with preset lumen value, or select "Custom" to input your own)</div>
+                    
+                    <label>Light Source:
+                        <select id="lightSource" required>
+                            <option value="predefined">Predefined type</option>
+                            <option value="custom" selected>Custom</option>
+                        </select>
+                    </label>
+                    <div id="predefinedLights" style="display: none;">
+                        <label>Type of Lights:
+                            <select id="lightType">
+                                <option value="1000">LED (1000 lm)</option>
+                                <option value="800">Incandescent (800 lm)</option>
+                                <option value="900">Fluorescent (900 lm)</option>
+                                <option value="1500">High-output LED (1500 lm)</option>
+                                <option value="2000">Commercial LED (2000 lm)</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div id="customLumens">
+                        <label>Lumens:
+                            <input type="number" min="0" id="customLumensInput" placeholder="Enter lumens" required>
+                            <span class="helper-text">Typical: 800-1100 lm for 60W LED equivalent</span>
+                            <span class="error" id="lumensError">Please enter a non-negative lumen value</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Installation Parameters</h3>
+                    <div class="vertical-fields">
+                        <label class="input-with-helper">Mounting Height:
+                            <input type="number" step="0.1" min="0" id="mountingHeight" placeholder="Enter mounting height" required>
+                            <button type="button" class="auto-calc-btn" title="Set to standard ceiling height">Auto</button>
+                            <span class="helper-text">Distance from floor to light fixture</span>
+                            <span class="error" id="mountingHeightError">Please enter a non-negative value</span>
+                            <span class="error" id="mountingHeightRoomError" style="display: none;">Mounting height must be less or equal to room height</span>
+                        </label>
+                        <label class="input-with-helper">Working Plane Height:
+                            <input type="number" step="0.1" min="0" id="workingPlaneHeight" placeholder="Enter working plane height" required>
+                            <button type="button" class="auto-calc-btn" title="Set to standard desk height">Auto</button>
+                            <span class="helper-text">Typically 0.8m for desks, 0m for floor illumination</span>
+                            <span class="error" id="workingPlaneError">Please enter a non-negative value</span>
+                            <span class="error" id="workingPlaneMountingError" style="display: none;">Working plane height must be equal or less than mounting height</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Surface Reflectance</h3>
+                    
+                    <!-- Reflectance Presets -->
+                    <div class="preset-buttons">
+                        <button type="button" class="preset-btn" data-reflectance="light">Light Colors</button>
+                        <button type="button" class="preset-btn" data-reflectance="medium">Medium Colors</button>
+                        <button type="button" class="preset-btn" data-reflectance="dark">Dark Colors</button>
+                    </div>
+                    
+                    <div class="vertical-fields">
+                        <label>Ceiling:
+                            <input type="number" step="0.01" min="0" max="1" id="ceilingReflect" placeholder="0.8" value="0.8" required>
+                            <span class="helper-text">0.8 for white, 0.7 for light colors, 0.5 for dark</span>
+                            <span class="error" id="ceilingError">Please enter a value between 0 and 1</span>
+                        </label>
+                        <label>Wall:
+                            <input type="number" step="0.01" min="0" max="1" id="wallReflect" placeholder="0.5" value="0.5" required>
+                            <span class="helper-text">0.7 for light walls, 0.5 for medium, 0.3 for dark</span>
+                            <span class="error" id="wallError">Please enter a value between 0 and 1</span>
+                        </label>
+                        <label>Floor:
+                            <input type="number" step="0.01" min="0" max="1" id="floorReflect" placeholder="0.2" value="0.2" required>
+                            <span class="helper-text">0.2 for typical floors</span>
+                            <span class="error" id="floorError">Please enter a value between 0 and 1</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button type="submit" id="submitBtn">
+                    <span class="spinner" id="submitSpinner" style="display: none;"></span>
+                    Calculate Number of Luminaires
+                </button>
+            </form>
+            
+            <div class="summary" id="summary">
+                <h3>Quick Summary</h3>
+                <div class="summary-content" id="summaryContent">
+                    <!-- Summary items will be added dynamically -->
+                </div>
+            </div>
+            
+            <div class="result" id="result" style="display:none;"></div>
+            
+            <!-- Print and Copy Buttons -->
+            <div style="margin-top: 15px; display: none;" id="actionButtons">
+                <button class="copy-btn" id="copyBtn" style="background: #6c757d; margin-left: 10px;">📋 Copy Results</button>
+                <!-- ><button class="copy-btn" id="printBtn" style="background: #6c757d; margin-left: 10px;">🖨️ Print Results</button> -->
+            </div>
+            
+            <!-- Layout Suggestions Section -->
+            <div class="layout-container" id="layoutContainer" style="display: none;">
+                <h3>🏗️ Lighting Layout Visualization</h3>
+                <div class="layout-visualization" id="layoutVisualization">
+                    <div class="layout-grid"></div>
+                    <!-- Room outline and luminaires will be added dynamically -->
+                </div>
+                <div class="layout-info" id="layoutInfo">
+                    <!-- Layout details will be added dynamically -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Information Page -->
+        <div class="page" id="info-page">
+            <h1>Lighting Design Information</h1>
+            
+            <div class="info-page">
+                <div class="info-section">
+                    <h3>Calculation Method</h3>
+                    <p>This tool uses the Lumen Method formula calibrated to align with industry-standard Dialux software 
+                        for accuracy:</p>
+                    <div class="formula-box">
+                        <strong>N = ( E × A ) / ( F × UF × MF × 1.097 )</strong>
+                    </div>
+                    <p>Where:</p>
+                    <ul>
+                        <li><strong>N</strong> = Number of luminaires</li>
+                        <li><strong>E</strong> = Required illuminance (lux)</li>
+                        <li><strong>A</strong> = Area (m²)</li>
+                        <li><strong>F</strong> = Luminous flux per luminaire (lumens)</li>
+                        <li><strong>UF</strong> = Utilization factor</li>
+                        <li><strong>MF</strong> = Maintenance factor</li>
+                        <li><strong>1.097</strong> = Dialux alignment multiplier</li>
+                    </ul>
+                    <p><strong>Note:</strong> The calculation is specifically calibrated for modern LED 
+                        luminaires with a wide 100-degree beam angle. This calibration ensures results are consistent with detailed 
+                        simulation software, accounting for the complex light distribution of contemporary fixtures.</p>
+                </div>
+                
+                <div class="info-section">
+                    <h3>About Lux Levels</h3>
+                    <p>Lux (lx) is the SI unit of illuminance, measuring luminous flux per unit area. One lux is equal to one lumen per square meter.</p>
+                    <p><strong>Common Lux Requirements:</strong></p>
+                    <ul>
+                        <li>Corridors: 100-150 lux</li>
+                        <li>Offices: 300-500 lux</li>
+                        <li>Classrooms: 300-500 lux</li>
+                        <li>Kitchens: 400-500 lux</li>
+                        <li>Detailed Work: 750-1000 lux</li>
+                    </ul>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Understanding Lumens</h3>
+                    <p>Lumens measure the total amount of visible light emitted by a source. Higher lumen values mean brighter lights.</p>
+                    <p><strong>Typical Lumen Values:</strong></p>
+                    <ul>
+                        <li>LED Bulb (60W equivalent): 800-1100 lumens</li>
+                        <li>Fluorescent Tube (4ft): 2000-3000 lumens</li>
+                        <li>Commercial LED Panel: 3000-4000 lumens</li>
+                    </ul>
+                </div>
+
+                <div class="info-section">
+                    <h3>Lighting Layout Principles</h3>
+                    <p><strong>Key Spacing Guidelines:</strong></p>
+                    <ul>
+                        <li><strong>Spacing to Height Ratio (SHR):</strong> Typically 1.0-1.5 for uniform lighting</li>
+                        <li><strong>Wall Distance:</strong> Luminaires should be 1/3 to 1/2 of spacing from walls</li>
+                        <li><strong>Grid Patterns:</strong> Rectangular or square grids for uniform illumination</li>
+                        <li><strong>Avoid Shadows:</strong> Strategic placement to minimize shadows in work areas</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Examples Page -->
+        <div class="page" id="examples-page">
+            <h1>Lighting Calculation Examples</h1>
+            
+            <div class="info-page">
+                <div class="info-section">
+                    <h3>Example 1: Office Lighting</h3>
+                    <p><strong>Scenario:</strong> Lighting a 6m × 5m office space</p>
+                    <p><strong>Requirements:</strong> 400 lux for office work</p>
+                    <p><strong>Solution:</strong></p>
+                    <ul>
+                        <li>Area: 30 m²</li>
+                        <li>LED panels (3000 lumens each)</li>
+                        <li>Utilization factor: 0.65</li>
+                        <li>Maintenance factor: 0.8</li>
+                        <li><strong>Calculation:</strong> (400 × 30) / (3000 × 0.65 × 0.8 × 1.097) = 7.0 → 7 luminaires</li>
+                        <li><strong>Layout:</strong> Appropriate grid based on room dimensions</li>
+                    </ul>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Example 2: Classroom Lighting</h3>
+                    <p><strong>Scenario:</strong> Lighting a 8m × 6m classroom</p>
+                    <p><strong>Requirements:</strong> 500 lux for reading and writing</p>
+                    <p><strong>Solution:</strong></p>
+                    <ul>
+                        <li>Area: 48 m²</li>
+                        <li>LED tubes (1800 lumens each)</li>
+                        <li>Utilization factor: 0.7</li>
+                        <li>Maintenance factor: 0.8</li>
+                        <li><strong>Calculation:</strong> (500 × 48) / (1800 × 0.7 × 0.8 × 1.097) = 21.7 → 22 luminaires</li>
+                        <li><strong>Layout:</strong> Appropriate grid based on room dimensions</li>
+                    </ul>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Quick Reference Table</h3>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                        <thead>
+                            <tr style="background: #0078d4; color: white;">
+                                <th style="padding: 10px; text-align: left;">Room Type</th>
+                                <th style="padding: 10px; text-align: left;">Recommended Lux</th>
+                                <th style="padding: 10px; text-align: left;">Typical Fixtures</th>
+                                <th style="padding: 10px; text-align: left;">Layout Pattern</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid #ddd;">
+                                <td style="padding: 10px;">Residential Living</td>
+                                <td style="padding: 10px;">150-300 lux</td>
+                                <td style="padding: 10px;">LED downlights, pendants</td>
+                                <td style="padding: 10px;">Perimeter + central</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #ddd;">
+                                <td style="padding: 10px;">Office Space</td>
+                                <td style="padding: 10px;">300-500 lux</td>
+                                <td style="padding: 10px;">LED panels, troffers</td>
+                                <td style="padding: 10px;">Uniform grid</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #ddd;">
+                                <td style="padding: 10px;">Retail</td>
+                                <td style="padding: 10px;">500-750 lux</td>
+                                <td style="padding: 10px;">Track lighting, spots</td>
+                                <td style="padding: 10px;">Accent + general</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px;">Industrial</td>
+                                <td style="padding: 10px;">750-1000 lux</td>
+                                <td style="padding: 10px;">High bay fixtures</td>
+                                <td style="padding: 10px;">Wide spacing grid</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% comment %}
+  Load JavaScript with defer attribute for better performance
+  This avoids parser-blocking warnings
+{% endcomment %}
+<script src="{{ 'lighting-calculator.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Lighting Calculator",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Lighting Calculator",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
