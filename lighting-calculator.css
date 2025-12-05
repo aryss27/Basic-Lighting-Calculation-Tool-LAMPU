@@ -1,0 +1,775 @@
+/* Shopify Lighting Calculator CSS */
+.lighting-calculator-wrapper {
+  /* Enhanced Color System */
+  --primary-50: #f0f8ff;
+  --primary-100: #e6f7ff;
+  --primary-500: #0078d4;
+  --primary-600: #005fa3;
+  --primary-700: #004578;
+  
+  /* Neutral Colors */
+  --neutral-50: #f8f9fa;
+  --neutral-100: #f1f3f4;
+  --neutral-200: #e5e7eb;
+  --neutral-500: #6b7280;
+  --neutral-700: #374151;
+  --neutral-900: #111827;
+  
+  /* Semantic Colors */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  
+  /* Spacing Scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 0.75rem;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Legacy variables for compatibility */
+  --accent: #0078d4;
+  --accent-2: #00c6fb;
+  --success-old: #28a745;
+  --warning-old: #ffc107;
+  --danger: #dc3545;
+}
+
+/* Modern CSS Reset */
+.lighting-calculator-wrapper *,
+.lighting-calculator-wrapper *::before,
+.lighting-calculator-wrapper *::after {
+  box-sizing: border-box;
+}
+
+.lighting-calculator-wrapper {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: var(--space-4);
+  background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+.lighting-calculator-wrapper .container {
+  background: #fff;
+  padding: var(--space-8);
+  border-radius: var(--radius-xl);
+  max-width: min(800px, 95dvw);
+  margin: var(--space-2) auto;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--neutral-200);
+}
+
+.lighting-calculator-wrapper h1 {
+  text-align: center;
+  color: var(--primary-700);
+  font-size: clamp(1.5rem, 4vw, 1.8rem);
+  margin-bottom: var(--space-3);
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+.lighting-calculator-wrapper .tool-summary {
+  text-align: center;
+  color: var(--neutral-700);
+  font-size: 0.95rem;
+  margin-bottom: var(--space-6);
+  padding: 0 var(--space-4);
+  line-height: 1.625;
+}
+
+.lighting-calculator-wrapper form label {
+  display: block;
+  margin-top: var(--space-4);
+  font-weight: 600;
+  color: var(--neutral-900);
+  font-size: 0.9rem;
+}
+
+.lighting-calculator-wrapper input,
+.lighting-calculator-wrapper select {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  margin-top: var(--space-1);
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--neutral-200);
+  font-size: 0.95rem;
+  background: var(--neutral-50);
+  transition: all var(--transition-fast);
+}
+
+.lighting-calculator-wrapper input:focus,
+.lighting-calculator-wrapper select:focus {
+  border-color: var(--primary-500);
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(0 120 212 / 0.1);
+  background: white;
+}
+
+/* Modern focus-visible support */
+.lighting-calculator-wrapper input:focus-visible,
+.lighting-calculator-wrapper select:focus-visible {
+  outline: 2px solid var(--primary-500);
+  outline-offset: 2px;
+}
+
+.lighting-calculator-wrapper button[type="submit"] {
+  margin-top: var(--space-6);
+  padding: var(--space-4) 0;
+  border: none;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--primary-500) 0%, var(--primary-600) 100%);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal);
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.lighting-calculator-wrapper button[type="submit"]:hover {
+  background: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-700) 100%);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+.lighting-calculator-wrapper button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+.lighting-calculator-wrapper .result {
+  margin-top: var(--space-6);
+  background: var(--primary-50);
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  font-size: 0.95rem;
+  color: var(--neutral-900);
+  animation: fadeIn 0.7s;
+  border: 1px solid var(--primary-100);
+}
+
+.lighting-calculator-wrapper .result strong {
+  color: var(--primary-600);
+}
+
+.lighting-calculator-wrapper .result table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--space-4);
+  background: #fff;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--neutral-200);
+}
+
+.lighting-calculator-wrapper .result th,
+.lighting-calculator-wrapper .result td {
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--neutral-200);
+  text-align: center;
+}
+
+.lighting-calculator-wrapper .result th {
+  background: var(--primary-50);
+  color: var(--primary-600);
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.lighting-calculator-wrapper .error {
+  color: var(--error);
+  font-size: 0.8rem;
+  margin-top: var(--space-1);
+  display: none;
+  font-weight: 500;
+}
+
+.lighting-calculator-wrapper .toggle-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-2);
+  background: var(--primary-50);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  gap: var(--space-2);
+  width: fit-content;
+  border: 1px solid var(--primary-100);
+}
+
+.lighting-calculator-wrapper .toggle-group span {
+  font-weight: 600;
+  margin-right: var(--space-1);
+  font-size: 0.9rem;
+  color: var(--neutral-700);
+}
+
+.lighting-calculator-wrapper .toggle-group input[type="radio"] {
+  margin: 0 var(--space-2) 0 var(--space-3);
+  width: 16px;
+  height: 16px;
+}
+
+.lighting-calculator-wrapper .toggle-group label {
+  margin: 0 var(--space-1) 0 0;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--neutral-700);
+}
+
+.lighting-calculator-wrapper .form-section {
+  background: var(--neutral-50);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  margin-top: var(--space-4);
+  border: 1px solid var(--neutral-200);
+}
+
+.lighting-calculator-wrapper .form-section h3 {
+  margin-top: 0;
+  color: var(--primary-600);
+  margin-bottom: var(--space-3);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.lighting-calculator-wrapper .note {
+  font-size: 0.8rem;
+  color: var(--neutral-500);
+  margin-top: var(--space-1);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.lighting-calculator-wrapper .vertical-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.lighting-calculator-wrapper .summary {
+  margin-top: var(--space-6);
+  background: var(--primary-50);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid var(--primary-500);
+  display: none;
+  border: 1px solid var(--primary-100);
+}
+
+.lighting-calculator-wrapper .summary h3 {
+  margin-top: 0;
+  color: var(--primary-600);
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.lighting-calculator-wrapper .summary-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.lighting-calculator-wrapper .summary-item {
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+  padding: var(--space-3);
+  background: white;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--neutral-200);
+}
+
+.lighting-calculator-wrapper .summary-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary-500);
+  margin: var(--space-1) 0;
+}
+
+.lighting-calculator-wrapper .summary-label {
+  font-size: 0.8rem;
+  color: var(--neutral-600);
+  font-weight: 500;
+}
+
+/* Layout Visualization Styles */
+.lighting-calculator-wrapper .layout-container {
+  margin-top: var(--space-6);
+  background: white;
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--neutral-200);
+}
+
+.lighting-calculator-wrapper .layout-visualization {
+  width: 100%;
+  height: 300px;
+  background: var(--neutral-50);
+  border: 2px solid var(--primary-500);
+  border-radius: var(--radius-lg);
+  position: relative;
+  margin: var(--space-4) 0;
+  overflow: hidden;
+}
+
+.lighting-calculator-wrapper .room-outline {
+  position: absolute;
+  border: 2px solid var(--neutral-700);
+  background: rgba(255,255,255,0.95);
+}
+
+.lighting-calculator-wrapper .luminaire {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #ff6b35;
+  border-radius: 50%;
+  border: 2px solid #ff4500;
+  transform: translate(-50%, -50%);
+  box-shadow: var(--shadow-sm);
+}
+
+.lighting-calculator-wrapper .luminaire::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, rgba(255,107,53,0.3) 0%, rgba(255,107,53,0) 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.lighting-calculator-wrapper .layout-grid {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(0,120,212,0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,120,212,0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.lighting-calculator-wrapper .layout-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.lighting-calculator-wrapper .layout-card {
+  background: var(--primary-50);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--primary-500);
+  border: 1px solid var(--primary-100);
+}
+
+.lighting-calculator-wrapper .layout-card h4 {
+  margin: 0 0 var(--space-2) 0;
+  color: var(--primary-600);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.lighting-calculator-wrapper .layout-card p {
+  margin: var(--space-1) 0;
+  font-size: 0.85rem;
+  color: var(--neutral-700);
+}
+
+.lighting-calculator-wrapper .spacing-info {
+  background: var(--primary-100);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  margin-top: var(--space-3);
+}
+
+.lighting-calculator-wrapper .recommendation {
+  background: #fff3cd;
+  border-left: 4px solid var(--warning);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  margin: var(--space-3) 0;
+  border: 1px solid #ffeaa7;
+}
+
+/* Navigation Styles */
+.lighting-calculator-wrapper .page-navigation {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--space-6);
+  background: white;
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--neutral-200);
+  gap: var(--space-2);
+}
+
+.lighting-calculator-wrapper .nav-button {
+  padding: var(--space-3) var(--space-6);
+  margin: 0;
+  border: 2px solid var(--primary-500);
+  background: white;
+  color: var(--primary-500);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all var(--transition-normal);
+  flex: 1;
+  max-width: 150px;
+}
+
+.lighting-calculator-wrapper .nav-button.active {
+  background: var(--primary-500);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+.lighting-calculator-wrapper .nav-button:hover:not(.active) {
+  background: var(--primary-50);
+  transform: translateY(-1px);
+}
+
+.lighting-calculator-wrapper .page {
+  display: none;
+}
+
+.lighting-calculator-wrapper .page.active {
+  display: block;
+  animation: fadeIn 0.5s;
+}
+
+.lighting-calculator-wrapper .info-page {
+  background: var(--neutral-50);
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  margin-top: var(--space-6);
+  border: 1px solid var(--neutral-200);
+}
+
+.lighting-calculator-wrapper .info-section {
+  margin-bottom: var(--space-8);
+}
+
+.lighting-calculator-wrapper .info-section h3 {
+  color: var(--primary-600);
+  border-bottom: 2px solid var(--primary-500);
+  padding-bottom: var(--space-2);
+  margin-bottom: var(--space-4);
+  font-weight: 600;
+}
+
+.lighting-calculator-wrapper .info-section ul {
+  padding-left: var(--space-6);
+}
+
+.lighting-calculator-wrapper .info-section li {
+  margin-bottom: var(--space-2);
+  line-height: 1.5;
+}
+
+/* Objective Button Styles */
+.lighting-calculator-wrapper .objective-buttons {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.lighting-calculator-wrapper .objective-button {
+  flex: 1;
+  padding: var(--space-6) var(--space-4);
+  border: 2px solid var(--primary-500);
+  border-radius: var(--radius-lg);
+  background: white;
+  color: var(--primary-500);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.lighting-calculator-wrapper .objective-button:hover {
+  background: var(--primary-50);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.lighting-calculator-wrapper .objective-button.active {
+  background: var(--primary-500);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.lighting-calculator-wrapper .objective-button .icon {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-2);
+  display: block;
+}
+
+.lighting-calculator-wrapper .objective-button .description {
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-top: var(--space-1);
+  opacity: 0.8;
+}
+
+/* Formula Styling */
+.lighting-calculator-wrapper .formula-box {
+  background: var(--primary-50);
+  border-left: 4px solid var(--primary-500);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  margin: var(--space-4) 0;
+  font-family: 'Courier New', monospace;
+  font-size: 1.1rem;
+  border: 1px solid var(--primary-100);
+}
+
+.lighting-calculator-wrapper .formula-box strong {
+  color: var(--primary-600);
+}
+
+.lighting-calculator-wrapper .copy-btn {
+  margin-top: var(--space-4);
+  padding: var(--space-3) var(--space-6);
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--success);
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  font-weight: 600;
+}
+
+.lighting-calculator-wrapper .copy-btn:hover {
+  background: #0da271;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.lighting-calculator-wrapper .copy-btn.copied {
+  background: #0c955f;
+}
+
+/* Quick Presets */
+.lighting-calculator-wrapper .preset-buttons {
+  display: flex;
+  gap: var(--space-2);
+  margin: var(--space-3) 0;
+  flex-wrap: wrap;
+}
+
+.lighting-calculator-wrapper .preset-btn {
+  padding: var(--space-2) var(--space-3);
+  border: 1.5px solid var(--primary-500);
+  border-radius: var(--radius-md);
+  background: white;
+  color: var(--primary-500);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-weight: 500;
+}
+
+.lighting-calculator-wrapper .preset-btn:hover {
+  background: var(--primary-50);
+  transform: translateY(-1px);
+}
+
+.lighting-calculator-wrapper .preset-btn.active {
+  background: var(--primary-500);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Input Helpers */
+.lighting-calculator-wrapper .input-with-helper {
+  position: relative;
+}
+
+.lighting-calculator-wrapper .helper-text {
+  font-size: 0.75rem;
+  color: var(--neutral-500);
+  margin-top: var(--space-1);
+  display: block;
+  line-height: 1.3;
+}
+
+.lighting-calculator-wrapper .auto-calc-btn {
+  position: absolute;
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--primary-500);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  font-size: 0.7rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background var(--transition-fast);
+}
+
+.lighting-calculator-wrapper .auto-calc-btn:hover {
+  background: var(--primary-600);
+}
+
+/* Loading State */
+.lighting-calculator-wrapper .loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.lighting-calculator-wrapper .spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--neutral-200);
+  border-top: 3px solid var(--primary-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: var(--space-3);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* Mobile responsiveness with modern viewport units */
+@media (max-width: 768px) {
+  .lighting-calculator-wrapper {
+    padding: var(--space-2);
+  }
+  
+  .lighting-calculator-wrapper .container {
+    padding: var(--space-4);
+    margin: var(--space-1) auto;
+  }
+  
+  .lighting-calculator-wrapper .summary-content {
+    flex-direction: column;
+  }
+  
+  .lighting-calculator-wrapper .summary-item {
+    min-width: 100%;
+  }
+  
+  .lighting-calculator-wrapper .layout-info {
+    grid-template-columns: 1fr;
+  }
+  
+  .lighting-calculator-wrapper .toggle-group {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  
+  .lighting-calculator-wrapper .objective-buttons {
+    flex-direction: column;
+  }
+  
+  .lighting-calculator-wrapper .page-navigation {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .lighting-calculator-wrapper .nav-button {
+    max-width: 200px;
+    width: 100%;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .lighting-calculator-wrapper * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .lighting-calculator-wrapper .page-navigation,
+  .lighting-calculator-wrapper button,
+  .lighting-calculator-wrapper .preset-buttons {
+    display: none !important;
+  }
+  
+  .lighting-calculator-wrapper .container {
+    box-shadow: none;
+    margin: 0;
+    padding: var(--space-2);
+    border: none;
+  }
+  
+  .lighting-calculator-wrapper .result,
+  .lighting-calculator-wrapper .summary,
+  .lighting-calculator-wrapper .layout-container {
+    break-inside: avoid;
+  }
+  
+  /* Keep lights visible in print */
+  .lighting-calculator-wrapper .luminaire {
+    background: #ff6b35 !important;
+    border: 2px solid #ff4500 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  /* Ensure layout visualization is visible */
+  .lighting-calculator-wrapper .layout-visualization {
+    border: 2px solid var(--primary-500) !important;
+    background: var(--neutral-50) !important;
+  }
+  
+  /* Keep room outline visible */
+  .lighting-calculator-wrapper .room-outline {
+    border: 2px solid var(--neutral-700) !important;
+    background: rgba(255,255,255,0.9) !important;
+  }
+}
